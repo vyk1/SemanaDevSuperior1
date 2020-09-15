@@ -3,6 +3,8 @@ package com.devsuperior.dspesquisa.services;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,13 +34,17 @@ public class RecordService {
 		entity.setMoment(Instant.now());
 
 		Game game = gameRepo.getOne(dto.getGameId());
-		
-		System.out.println(game.getPlatform());
+
 		entity.setGame(game);
 
 		entity = repo.save(entity);
 		return new RecordDTO(entity);
 
+	}
+
+	@Transactional(readOnly = true )
+	public Page<RecordDTO> findByMoments(Instant minDate, Instant maxDate, PageRequest pReq) {
+		return repo.findByMoments(minDate, maxDate, pReq).map(x -> new RecordDTO(x));
 	}
 
 }
