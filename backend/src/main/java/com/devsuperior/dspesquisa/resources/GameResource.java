@@ -14,7 +14,7 @@ import com.devsuperior.dspesquisa.services.GameService;
 @RestController
 @RequestMapping(value = "/games")
 public class GameResource {
-	
+
 	@Autowired
 	private GameService service;
 
