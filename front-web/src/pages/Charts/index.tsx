@@ -27,23 +27,40 @@ const Charts = () => {
     const [barChartData, setBarChartData] = useState<BarChartData[]>([]);
     const [platformData, setPlatformData] = useState<PieChartData>(initialPieData);
     const [genreData, setGenre] = useState<PieChartData>(initialPieData);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         async function getData() {
-            const recordsResponse = await Axios.get(`${BASE_URL}/records`)
-            const gamesResponse = await Axios.get(`${BASE_URL}/games`)
+            try {
+                setLoaded(false)
+                const recordsResponse = await Axios.get(`${BASE_URL}/records`)
+                const gamesResponse = await Axios.get(`${BASE_URL}/games`)
 
-            const barData = buildBarSeries(gamesResponse.data, recordsResponse.data.content)
-            setBarChartData(barData)
+                const barData = buildBarSeries(gamesResponse.data, recordsResponse.data.content)
+                setBarChartData(barData)
 
-            const platformChartData = getPlatformChartData(recordsResponse.data.content)
-            setPlatformData(platformChartData)
+                const platformChartData = getPlatformChartData(recordsResponse.data.content)
+                setPlatformData(platformChartData)
 
-            const genreChartData = getGenderChartData(recordsResponse.data.content)
-            setGenre(genreChartData)
+                const genreChartData = getGenderChartData(recordsResponse.data.content)
+                setGenre(genreChartData)
+            } catch (error) {
+                console.log(error)
+                alert("Ocorreu um erro ao carregar os dados")
+            } finally {
+                setLoaded(true)
+            }
         }
         getData()
     }, []);
+
+    if (!loaded) {
+        return (
+            <div className="filters-container records-actions">
+                <h1 className="text-center">Aguarde . . .</h1>
+            </div>
+        )
+    }
     return (
         <div className="page-container">
             <Filters link="/records" linkText="VER TABELA" />

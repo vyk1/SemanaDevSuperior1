@@ -8,7 +8,7 @@ import PlatformCard from './PlatformCard';
 import { Game, GamePlatform } from './types';
 import { FontAwesome5 as Icon } from '@expo/vector-icons';
 
-const BASE_URL = "http://192.168.0.105:8080"
+const BASE_URL = "https://sds1-postgres.herokuapp.com"
 
 const mapSelectedValues = (games: Game[]) => {
     return games.map(g => ({
@@ -48,7 +48,7 @@ const CreateRecord = () => {
                 setAge('')
                 setSelectedGame('')
                 setPlatform(undefined)
-                Alert.alert("Sucesso!")
+                Alert.alert("Sucesso!", "Dados salvos com sucesso")
             })
             .catch(e => {
                 console.log("Falhou.", e)
